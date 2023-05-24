@@ -1,0 +1,2 @@
+../Core/Src/accel_config.c:15:6:MPU6050_Config	32	static
+../Core/Src/accel_config.c:38:6:MPU6050_2_Config	32	static

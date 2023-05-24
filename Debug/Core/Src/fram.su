@@ -1,0 +1,11 @@
+../Core/Src/fram.c:33:6:HAL_SPI_TxCpltCallback	16	static
+../Core/Src/fram.c:58:6:HAL_SPI_RxCpltCallback	16	static
+../Core/Src/fram.c:89:6:FRAMset_config	16	static
+../Core/Src/fram.c:103:6:HAL_SPI_ErrorCallback	16	static
+../Core/Src/fram.c:107:6:FRAM_ID	8	static
+../Core/Src/fram.c:115:6:FRAM_enablewrite	8	static
+../Core/Src/fram.c:121:6:FRAM_StatusRegister	8	static
+../Core/Src/fram.c:127:6:FRAM_resetWrite	16	static
+../Core/Src/fram.c:140:6:FRAM_Write	24	static
+../Core/Src/fram.c:157:6:FRAM_Read_Command	24	static
+../Core/Src/fram.c:170:6:FRAM_Read	16	static

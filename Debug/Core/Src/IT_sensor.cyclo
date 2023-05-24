@@ -1,0 +1,2 @@
+IT_sensor.c:39:6:HAL_I2C_MemRxCpltCallback	2
+IT_sensor.c:53:6:HAL_I2C_ErrorCallback	1

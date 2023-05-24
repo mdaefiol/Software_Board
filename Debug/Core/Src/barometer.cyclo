@@ -1,0 +1,7 @@
+barometer.c:26:6:dataRead	1
+barometer.c:47:5:BMP280_Config	6
+barometer.c:99:5:BMPReadRaw	2
+barometer.c:123:6:BMP280_WakeUP	1
+barometer.c:140:9:bmp280_compensate_T_int32	1
+barometer.c:150:10:bmp280_compensate_P_int32	2
+barometer.c:178:6:BMP280_Measure	4

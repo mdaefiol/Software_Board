@@ -1,0 +1,2 @@
+accel_1.c:20:6:MPU6050_Config	2
+accel_1.c:42:6:read_sensor	1

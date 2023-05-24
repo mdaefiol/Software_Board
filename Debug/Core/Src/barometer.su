@@ -1,0 +1,4 @@
+../Core/Src/barometer.c:24:6:dataRead	24	static
+../Core/Src/barometer.c:44:5:BMP280_Config	48	static
+../Core/Src/barometer.c:95:9:bmp280_compensate_T_int32	32	static
+../Core/Src/barometer.c:105:10:bmp280_compensate_P_int32	328	static

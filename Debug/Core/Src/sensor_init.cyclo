@@ -1,0 +1,3 @@
+sensor_init.c:35:6:data_att	1
+sensor_init.c:47:6:calculate_EMA	1
+sensor_init.c:84:6:data_transform	1

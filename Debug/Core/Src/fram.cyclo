@@ -1,0 +1,10 @@
+fram.c:31:6:HAL_SPI_TxCpltCallback	7
+fram.c:55:6:HAL_SPI_RxCpltCallback	5
+fram.c:75:6:HAL_SPI_ErrorCallback	1
+fram.c:79:6:FRAM_ID	1
+fram.c:88:6:FRAM_enablewrite	1
+fram.c:96:6:FRAM_StatusRegister	1
+fram.c:102:6:FRAM_resetWrite	1
+fram.c:116:6:FRAM_Write	2
+fram.c:136:6:FRAM_Read_Command	1
+fram.c:149:6:FRAM_Read	1
