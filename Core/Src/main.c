@@ -67,7 +67,7 @@ static void MX_TIM4_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-#define NUM_AMOSTRAS 15  // Número de amostras para verificar a tendência da altitude
+#define NUM_AMOSTRAS 20  // Número de amostras para verificar a tendência da altitude
 
 // ESTADO DA FRAM E VEICULO, DADOS DO VEICULO: ACELERAÇÃO E PRESSÃO
 extern FRAM_STATES FRAM_state;
@@ -87,6 +87,10 @@ extern BMP280_data bmp_data;
 extern Data_EMA ema_receive;
 extern Data_transf data_rec;
 
+int contSubida = 0;
+int contDescida = 0;
+float diffAceleracao;
+extern uint8_t press_receiv ;
 
 /* USER CODE END 0 */
 
@@ -136,12 +140,6 @@ int main(void)
   MPU6050_2_Config();
   BMP280_Config(OSRS_2, OSRS_16, MODE_NORMAL, T_SB_0p5, IIR_16);
 
-  int contSubida = 0;
-  int contDescida = 0;
-  float diffAceleracao;
-  data_vehicle.pressMIN = 100000;
-  extern uint8_t press_receiv ;
-
   // INICIALIZÇÃO DO ESTADO E INDICADORES DE PRÉ LANÇAMENTO
   current_state = PAUSADO;
   EstadoAltitude = ESTADO_INICIAL;
@@ -159,6 +157,8 @@ int main(void)
   FRAM_state = FRAM_PAUSED;
   FRAMset_config();
   uint16_t FRAM_address = 0x0000;
+
+  data_vehicle.pressMIN = 100000;
   extern uint8_t send_FRAM[16];
   extern uint8_t bytes_ID[4];
   // CÓDIGOS PARA SOFTWARE IN THE LOOP:
@@ -177,8 +177,12 @@ int main(void)
 
      // Verifica a tendência da aceleraçao
 	 // data_vehicle.accel = simulated_data.accel_z;
-	 data_vehicle.accel = ema_receive.EMA_z;
 	 //data_vehicle.accelTemp = data_vehicle.accel;
+
+
+
+     // Verifica a tendência da aceleraçao
+	 data_vehicle.accel = ema_receive.EMA_z;
 	 data_vehicle.accelTemp = ema_receive.EMA_z;
      diffAceleracao = data_vehicle.accel - data_vehicle.accel_anterior;
 
@@ -188,7 +192,7 @@ int main(void)
     	 EstadoAceleracao = ACCEL_NEAR_G;
      } else if (data_vehicle.accel > 1) {
     	 EstadoAceleracao = ACCEL_HIGH_POSITIVE;
-     } else if (diffAceleracao < -0.05) {
+     } else if (diffAceleracao < -0.1) {
     	 EstadoAceleracao = ACCEL_HIGH_NEGATIVE;
      } else {
     	 EstadoAceleracao = ACCEL_LOW_NEGATIVE;
@@ -198,17 +202,16 @@ int main(void)
      // Verifica a tendência da altitude
      if (press_receiv == 1){
     	 press_receiv = 0;
-    	// data_vehicle.pressao = simulated_data.pressao;
     	 data_vehicle.pressao = ema_receive.EMA_press;
     	 data_vehicle.pressTemp = data_vehicle.pressao;
 
     	 if ( data_vehicle.pressao < data_vehicle.pressao_anterior){
-    		 if (contSubida < 30)
+    		 if (contSubida < 20)
     			 contSubida++;
     		 if (contDescida > 0)
     			 contDescida--;
-    	 } else if ( data_vehicle.pressao > data_vehicle.pressao_anterior) { //5%
-    		 if (contDescida < 30)
+    	 } else if ( data_vehicle.pressao > data_vehicle.pressao_anterior) {
+    		 if (contDescida < 20)
     			 contDescida++;
     		 if (contSubida > 0 )
     			 contSubida--;
@@ -251,9 +254,9 @@ int main(void)
              break;
 
          case ESTADO_ESTACIONARIO:
-             if (contSubida >= NUM_AMOSTRAS) {
+             if (contSubida >= NUM_AMOSTRAS - 5 ) {
             	 EstadoAltitude = ESTADO_SUBIDA;
-             } else if (contDescida >= 7) {
+             } else if (contDescida >= NUM_AMOSTRAS + 5) {
             	 EstadoAltitude = ESTADO_DESCIDA;
              }
              break;
@@ -528,7 +531,7 @@ static void MX_TIM4_Init(void)
   htim4.Instance = TIM4;
   htim4.Init.Prescaler = 7199;
   htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 500;
+  htim4.Init.Period = 50;
   htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
